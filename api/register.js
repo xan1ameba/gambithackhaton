@@ -21,10 +21,15 @@ module.exports = async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
+  // Where registrations go (set any of them in Vercel -> Environment Variables):
+  //   GOOGLE_SCRIPT_URL                      -> a row in Google Sheets
+  //   TELEGRAM_BOT_TOKEN + TELEGRAM_CHAT_ID  -> a message in Telegram (chat ids may be separated by commas)
   const token = process.env.TELEGRAM_BOT_TOKEN;
   const chatId = process.env.TELEGRAM_CHAT_ID;
-  if (!token || !chatId) {
-    console.error('Missing TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID');
+  const sheetUrl = process.env.GOOGLE_SCRIPT_URL;
+  const useTelegram = Boolean(token && chatId);
+  if (!useTelegram && !sheetUrl) {
+    console.error('Nothing configured: set GOOGLE_SCRIPT_URL and/or TELEGRAM_BOT_TOKEN + TELEGRAM_CHAT_ID');
     return res.status(500).json({ error: 'Server is not configured yet.' });
   }
 
@@ -88,8 +93,19 @@ module.exports = async function handler(req, res) {
     '✈️ @' + esc(tg) + '\n\n' +
     '🕒 ' + esc(time);
 
+  const sendToSheet = async () => {
+    const r = await fetch(sheetUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...d, members: members.length, telegram: '@' + tg }),
+      redirect: 'follow',
+    });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok || !j.ok) throw new Error('sheet: ' + r.status + ' ' + JSON.stringify(j));
+  };
+
   // TELEGRAM_CHAT_ID may hold several ids separated by commas: "-1001111111111,123456789,987654321"
-  const chatIds = chatId.split(/[,\s;]+/).filter(Boolean);
+  const chatIds = useTelegram ? chatId.split(/[,\s;]+/).filter(Boolean) : [];
 
   const sendTo = async (id) => {
     const r = await fetch('https://api.telegram.org/bot' + token + '/sendMessage', {
@@ -106,10 +122,12 @@ module.exports = async function handler(req, res) {
     if (!r.ok || !j.ok) throw new Error('chat ' + id + ': ' + r.status + ' ' + JSON.stringify(j));
   };
 
-  const results = await Promise.allSettled(chatIds.map(sendTo));
-  results.forEach((r) => { if (r.status === 'rejected') console.error('Telegram error:', r.reason && r.reason.message); });
+  const jobs = chatIds.map(sendTo);
+  if (sheetUrl) jobs.push(sendToSheet());
+  const results = await Promise.allSettled(jobs);
+  results.forEach((r) => { if (r.status === 'rejected') console.error('Send error:', r.reason && r.reason.message); });
 
-  // Success if at least one chat received the registration.
+  // Success if at least one place (sheet or chat) received the registration.
   if (results.some((r) => r.status === 'fulfilled')) {
     return res.status(200).json({ ok: true });
   }
