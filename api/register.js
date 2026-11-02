@@ -88,25 +88,30 @@ module.exports = async function handler(req, res) {
     '✈️ @' + esc(tg) + '\n\n' +
     '🕒 ' + esc(time);
 
-  try {
+  // TELEGRAM_CHAT_ID may hold several ids separated by commas: "-1001111111111,123456789,987654321"
+  const chatIds = chatId.split(/[,\s;]+/).filter(Boolean);
+
+  const sendTo = async (id) => {
     const r = await fetch('https://api.telegram.org/bot' + token + '/sendMessage', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        chat_id: chatId,
+        chat_id: id,
         text,
         parse_mode: 'HTML',
         disable_web_page_preview: true,
       }),
     });
     const j = await r.json().catch(() => ({}));
-    if (!r.ok || !j.ok) {
-      console.error('Telegram error:', r.status, JSON.stringify(j));
-      return res.status(502).json({ error: 'Could not send the registration. Please try again in a minute.' });
-    }
+    if (!r.ok || !j.ok) throw new Error('chat ' + id + ': ' + r.status + ' ' + JSON.stringify(j));
+  };
+
+  const results = await Promise.allSettled(chatIds.map(sendTo));
+  results.forEach((r) => { if (r.status === 'rejected') console.error('Telegram error:', r.reason && r.reason.message); });
+
+  // Success if at least one chat received the registration.
+  if (results.some((r) => r.status === 'fulfilled')) {
     return res.status(200).json({ ok: true });
-  } catch (err) {
-    console.error('Telegram request failed:', err);
-    return res.status(502).json({ error: 'Could not send the registration. Please try again in a minute.' });
   }
+  return res.status(502).json({ error: 'Could not send the registration. Please try again in a minute.' });
 };
