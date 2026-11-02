@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gambit Hackathon — Registration</title>
+<meta name="description" content="Register your team for Gambit Hackathon. 14 November, Aktobe HUB.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --red:#E5202E; --red-dark:#8E141E; --bg:#0A0A0A; --card:#121214;
+    --line:#2E2E34; --muted:#B4B4BE; --text:#FFFFFF;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; color:var(--text); background-color:var(--bg);
+    font-family:'Bricolage Grotesque',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    line-height:1.45; -webkit-font-smoothing:antialiased;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background:
+      radial-gradient(circle at 96% 0%, rgba(229,32,46,.38) 0%, rgba(229,32,46,0) 36%),
+      radial-gradient(circle at 2% 100%, rgba(229,32,46,.30) 0%, rgba(229,32,46,0) 40%),
+      var(--bg);
+  }
+  body{background:transparent}
+  html{background:var(--bg)}
+  .topbar{height:8px;background:var(--red)}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+
+  header.site{display:flex;align-items:center;justify-content:space-between;padding:32px 0 8px;gap:16px}
+  header.site img.hackhub{height:44px;width:auto;display:block}
+  header.site .gambit{display:flex;align-items:center;gap:14px}
+  header.site .gambit span{font-weight:800;font-size:22px;letter-spacing:-.5px}
+  header.site img.gambit-logo{height:84px;width:auto;display:block}
+
+  .hero{padding:48px 0 16px}
+  h1{margin:0;font-weight:800;line-height:.86;letter-spacing:-.04em;font-size:clamp(64px,15vw,168px)}
+  h1 .red{display:block;color:var(--red);font-size:.53em;line-height:1;letter-spacing:-.03em;margin-top:6px}
+  .rule{width:120px;height:6px;background:var(--red);margin:36px 0 32px;border:0}
+
+
+  .facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:0}
+  .fact{border:1px solid var(--line);border-radius:18px;padding:18px 20px;background:rgba(18,18,20,.7)}
+  .fact small{display:block;color:var(--muted);font-size:13px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px}
+  .fact strong{font-size:22px;font-weight:800;letter-spacing:-.01em}
+  .fact.warn strong{color:var(--red)}
+
+
+  section#register{padding:56px 0 24px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:28px;padding:40px}
+  .card h2{margin:0 0 6px;font-size:clamp(30px,5vw,44px);font-weight:800;letter-spacing:-.03em}
+  .card .sub{margin:0 0 32px;color:var(--muted)}
+  fieldset{border:0;margin:0 0 32px;padding:0}
+  legend{padding:0;margin-bottom:16px;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--red);font-weight:800}
+  .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+  .grid .full{grid-column:1/-1}
+  label{display:block;font-size:15px;font-weight:500;margin-bottom:8px}
+  label .opt{color:var(--muted);font-weight:400}
+  input{
+    width:100%;height:54px;padding:0 16px;border-radius:14px;
+    background:#0A0A0C;border:1.5px solid var(--line);color:var(--text);
+    font:inherit;font-size:17px;outline:none;transition:border-color .15s, box-shadow .15s;
+  }
+  input::placeholder{color:#6F6F7A}
+  input:focus{border-color:var(--red);box-shadow:0 0 0 4px rgba(229,32,46,.22)}
+  input[aria-invalid="true"]{border-color:#FF6B76}
+  .hint{margin:7px 0 0;font-size:13.5px;color:var(--muted)}
+  .err{margin:7px 0 0;font-size:13.5px;color:#FF8A93;min-height:0}
+  .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:10px;
+    height:62px;padding:0 36px;border:0;border-radius:16px;cursor:pointer;
+    background:var(--red);color:#fff;font:inherit;font-size:19px;font-weight:800;letter-spacing:.01em;
+    transition:transform .12s, background .15s;width:100%;
+  }
+  .btn:hover{background:#F2303E}
+  .btn:active{transform:translateY(1px)}
+  .btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
+  .btn[disabled]{opacity:.6;cursor:not-allowed}
+  .formerr{margin:16px 0 0;color:#FF8A93;font-size:15px}
+
+  .state{text-align:center;padding:24px 8px}
+  .state h2{margin:0 0 10px}
+  .state p{color:var(--muted);margin:0 auto;max-width:520px;font-size:18px}
+  .state .big-check{width:72px;height:72px;border-radius:50%;background:var(--red);display:grid;place-items:center;margin:0 auto 20px}
+  [hidden]{display:none !important}
+
+  footer.site{margin-top:56px;padding:40px 0 56px;border-top:1px solid var(--line)}
+  footer .thanks{margin:0 0 24px;color:var(--muted);font-size:15px;letter-spacing:.2em;text-transform:uppercase}
+  footer .logos{display:flex;align-items:center;gap:48px;flex-wrap:wrap}
+  footer .logos img{width:auto;display:block}
+  footer .by{margin:28px 0 0;color:var(--muted);font-size:15px}
+  footer .by b{color:var(--text);font-weight:500}
+
+  @media (max-width:760px){
+    .facts{grid-template-columns:1fr}
+    .grid{grid-template-columns:1fr}
+    .card{padding:26px 20px;border-radius:22px}
+    header.site img.gambit-logo{height:64px}
+    header.site img.hackhub{height:34px}
+    header.site .gambit span{font-size:18px}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none !important;scroll-behavior:auto !important}}
+</style>
+</head>
+<body>
+<div class="topbar"></div>
+<div class="wrap">
+
+  <header class="site">
+    <img class="hackhub" src="assets/hackhub.png" alt="HackHub">
+    <div class="gambit">
+      <span>#33929</span>
+      <img class="gambit-logo" src="assets/gambit.png" alt="Gambit">
+    </div>
+  </header>
+
+  <main>
+    <div class="hero">
+      <h1>GAMBIT<span class="red">HACKATHON</span></h1>
+      <hr class="rule">
+
+      <div class="facts">
+        <div class="fact warn" id="deadlineFact"><small>Registration deadline</small><strong>10 November</strong></div>
+        <div class="fact"><small>Event date</small><strong>14 November</strong></div>
+        <div class="fact"><small>Location</small><strong>Aktobe HUB</strong></div>
+      </div>
+    </div>
+
+    <section id="register" aria-labelledby="regTitle">
+      <div class="card">
+
+        <!-- FORM -->
+        <div id="formView">
+          <h2 id="regTitle">Register your team</h2>
+          <p class="sub">Teams of 2 to 4 people. The captain is the main contact. Fields marked optional can be left empty.</p>
+
+          <form id="regForm" novalidate>
+            <div class="hp" aria-hidden="true">
+              <label for="website">Leave this field empty</label>
+              <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
+            </div>
+
+            <fieldset>
+              <legend>Team</legend>
+              <div class="grid">
+                <div class="full">
+                  <label for="teamName">Team name</label>
+                  <input id="teamName" name="teamName" type="text" maxlength="60" autocomplete="off" required>
+                  <p class="err" data-err="teamName"></p>
+                </div>
+                <div class="full">
+                  <label for="school">School</label>
+                  <input id="school" name="school" type="text" maxlength="160" autocomplete="off" required>
+                  <p class="hint">If your team is from different schools, write them with + (School 1 + School 2).</p>
+                  <p class="err" data-err="school"></p>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Team members</legend>
+              <div class="grid">
+                <div class="full">
+                  <label for="member1">Member 1 — Captain (full name)</label>
+                  <input id="member1" name="member1" type="text" maxlength="80" autocomplete="name" required>
+                  <p class="err" data-err="member1"></p>
+                </div>
+                <div>
+                  <label for="member2">Member 2 (full name)</label>
+                  <input id="member2" name="member2" type="text" maxlength="80" autocomplete="off" required>
+                  <p class="err" data-err="member2"></p>
+                </div>
+                <div>
+                  <label for="member3">Member 3 (full name) <span class="opt">— optional</span></label>
+                  <input id="member3" name="member3" type="text" maxlength="80" autocomplete="off">
+                  <p class="err" data-err="member3"></p>
+                </div>
+                <div>
+                  <label for="member4">Member 4 (full name) <span class="opt">— optional</span></label>
+                  <input id="member4" name="member4" type="text" maxlength="80" autocomplete="off">
+                  <p class="err" data-err="member4"></p>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Captain contacts</legend>
+              <div class="grid">
+                <div class="full">
+                  <label for="email">Captain email</label>
+                  <input id="email" name="email" type="email" maxlength="120" autocomplete="email" inputmode="email" required>
+                  <p class="err" data-err="email"></p>
+                </div>
+                <div>
+                  <label for="phone">Captain phone number</label>
+                  <input id="phone" name="phone" type="tel" maxlength="24" autocomplete="tel" inputmode="tel" required>
+                  <p class="err" data-err="phone"></p>
+                </div>
+                <div>
+                  <label for="telegram">Captain Telegram</label>
+                  <input id="telegram" name="telegram" type="text" maxlength="40" autocomplete="off" required>
+                  <p class="err" data-err="telegram"></p>
+                </div>
+              </div>
+            </fieldset>
+
+            <button class="btn" type="submit" id="submitBtn">Register team</button>
+            <p class="formerr" id="formErr" role="alert" hidden></p>
+          </form>
+        </div>
+
+        <!-- SUCCESS -->
+        <div id="doneView" class="state" hidden tabindex="-1">
+          <div class="big-check" aria-hidden="true">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+          </div>
+          <h2>You're in!</h2>
+          <p>Team <b id="doneTeam"></b> is registered. We will contact the captain on Telegram or email. See you on 14 November at Aktobe HUB.</p>
+        </div>
+
+        <!-- CLOSED -->
+        <div id="closedView" class="state" hidden>
+          <h2>Registration is closed</h2>
+          <p>The deadline was 10 November. Follow Gambit for the next events.</p>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="site">
+    <p class="thanks">Thank you to our sponsors</p>
+    <div class="logos">
+      <img src="assets/nova.png" alt="Nova Education" style="height:88px">
+      <img src="assets/aqtobe.png" alt="Aqtobe Hub" style="height:76px">
+      <img src="assets/partner.png" alt="Partner" style="height:76px">
+    </div>
+    <p class="by">Powered by <b>Nova Education</b> and <b>Aqtobe Hub</b></p>
+  </footer>
+</div>
+
+<script>
+(function(){
+  // Registration closes at the end of 10 November 2026, Aktobe time (UTC+5).
+  var DEADLINE = new Date('2026-11-10T23:59:59+05:00');
+
+  var form = document.getElementById('regForm');
+  var btn = document.getElementById('submitBtn');
+  var formErr = document.getElementById('formErr');
+  var formView = document.getElementById('formView');
+  var doneView = document.getElementById('doneView');
+  var closedView = document.getElementById('closedView');
+  var loadedAt = Date.now();
+
+  if (Date.now() > DEADLINE.getTime()) {
+    formView.hidden = true; closedView.hidden = false;
+    document.getElementById('deadlineFact').querySelector('strong').textContent = 'Closed';
+  }
+
+  function v(name){ return (form.elements[name].value || '').trim().replace(/\s+/g,' '); }
+  function setErr(name, msg){
+    var el = form.querySelector('[data-err="'+name+'"]');
+    var input = form.elements[name];
+    if (el) el.textContent = msg || '';
+    if (input) input.setAttribute('aria-invalid', msg ? 'true' : 'false');
+  }
+
+  function validate(){
+    var ok = true, first = null;
+    function bad(name, msg){ setErr(name, msg); if (ok) first = name; ok = false; }
+    ['teamName','school','member1','member2','member3','member4','email','phone','telegram'].forEach(function(n){ setErr(n,''); });
+
+    if (v('teamName').length < 2) bad('teamName','Enter your team name.');
+    if (v('school').length < 2) bad('school','Enter your school.');
+    ['member1','member2','member3','member4'].forEach(function(n){
+      var val = v(n);
+      if (!val && (n === 'member3' || n === 'member4')) return; // optional
+      if (val.length < 3 || val.indexOf(' ') < 0) bad(n,'Enter name and surname.');
+    });
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v('email'))) bad('email','Enter a valid email.');
+    var digits = v('phone').replace(/\D/g,'');
+    if (!/^\+?[\d\s()\-]+$/.test(v('phone')) || digits.length < 10 || digits.length > 15) bad('phone','Enter a valid phone number.');
+    var tg = v('telegram').replace(/^https?:\/\/t\.me\//i,'').replace(/^@/,'');
+    if (!/^[A-Za-z][A-Za-z0-9_]{4,31}$/.test(tg)) bad('telegram','Enter a valid Telegram username (5–32 letters, digits or _).');
+    if (first) form.elements[first].focus();
+    return ok;
+  }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    formErr.hidden = true;
+    if (Date.now() > DEADLINE.getTime()) { formView.hidden = true; closedView.hidden = false; return; }
+    if (!validate()) return;
+
+    var payload = {
+      teamName: v('teamName'),
+      school: v('school'),
+      member1: v('member1'), member2: v('member2'), member3: v('member3'), member4: v('member4'),
+      email: v('email'),
+      phone: v('phone'),
+      telegram: '@' + v('telegram').replace(/^https?:\/\/t\.me\//i,'').replace(/^@/,''),
+      website: form.elements.website.value,
+      elapsed: Date.now() - loadedAt
+    };
+
+    btn.disabled = true; var old = btn.textContent; btn.textContent = 'Sending…';
+
+    fetch('/api/register', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(payload)
+    }).then(function(r){
+      return r.json().catch(function(){ return {}; }).then(function(d){ return {ok:r.ok, d:d}; });
+    }).then(function(res){
+      if (res.ok) {
+        document.getElementById('doneTeam').textContent = payload.teamName;
+        formView.hidden = true; doneView.hidden = false; doneView.focus();
+        doneView.scrollIntoView({behavior:'smooth', block:'center'});
+      } else if (res.d && res.d.closed) {
+        formView.hidden = true; closedView.hidden = false;
+      } else {
+        throw new Error((res.d && res.d.error) || 'Something went wrong. Please try again.');
+      }
+    }).catch(function(err){
+      formErr.textContent = err.message || 'Network error. Please try again.';
+      formErr.hidden = false;
+      btn.disabled = false; btn.textContent = old;
+    });
+  });
+})();
+</script>
+</body>
+</html>
