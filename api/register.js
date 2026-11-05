@@ -60,6 +60,7 @@ module.exports = async function handler(req, res) {
     email: clean(body.email, 120),
     phone: clean(body.phone, 24),
     telegram: clean(body.telegram, 40),
+    format: body.format === 'online' ? 'online' : body.format === 'offline' ? 'offline' : '',
   };
 
   const tg = d.telegram.replace(/^@/, '');
@@ -72,6 +73,7 @@ module.exports = async function handler(req, res) {
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(d.email)) problems.push('email');
   if (phoneDigits.length < 10 || phoneDigits.length > 15) problems.push('phone');
   if (!/^[A-Za-z][A-Za-z0-9_]{4,31}$/.test(tg)) problems.push('telegram');
+  if (!d.format) problems.push('format (offline/online)');
   if (problems.length) {
     return res.status(400).json({ error: 'Please check: ' + problems.join(', ') + '.' });
   }
@@ -85,7 +87,8 @@ module.exports = async function handler(req, res) {
   const text =
     '🆕 <b>New team registered</b>\n\n' +
     '🏷 <b>Team:</b> ' + esc(d.teamName) + '\n' +
-    '🏫 <b>School:</b> ' + esc(d.school) + '\n\n' +
+    '🏫 <b>School:</b> ' + esc(d.school) + '\n' +
+    (d.format === 'online' ? '🌍 <b>Format:</b> ONLINE' : '📍 <b>Format:</b> OFFLINE (Aktobe HUB)') + '\n\n' +
     '👥 <b>Members (' + members.length + ')</b>\n' +
     members.map((m, i) => (i + 1) + '. ' + esc(m) + (i === 0 ? ' (captain)' : '')).join('\n') + '\n\n' +
     '📧 ' + esc(d.email) + '\n' +
