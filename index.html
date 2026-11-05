@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0A0A0A">
+<meta name="color-scheme" content="dark">
 <title>Gambit Hackathon — Registration</title>
 <meta name="description" content="Register your team for Gambit Hackathon. 14 November, Aktobe HUB.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,7 +16,9 @@
     --line:#2E2E34; --muted:#B4B4BE; --text:#FFFFFF;
   }
   *{box-sizing:border-box}
-  html{scroll-behavior:smooth}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;text-size-adjust:100%;overflow-x:clip}
+  a,button,input{-webkit-tap-highlight-color:transparent}
+  input{scroll-margin-top:96px}
   body{
     margin:0; color:var(--text); background-color:var(--bg);
     font-family:'Bricolage Grotesque',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
@@ -30,7 +34,7 @@
   body{background:transparent}
   html{background:var(--bg)}
   .topbar{height:8px;background:var(--red)}
-  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 max(24px,env(safe-area-inset-left)) 0 max(24px,env(safe-area-inset-right))}
 
   header.site{display:flex;align-items:center;justify-content:space-between;padding:32px 0 8px;gap:16px}
   header.site img.hackhub{height:44px;width:auto;display:block}
@@ -39,7 +43,7 @@
   header.site img.gambit-logo{height:84px;width:auto;display:block}
 
   .hero{padding:48px 0 16px}
-  h1{margin:0;font-weight:800;line-height:.86;letter-spacing:-.04em;font-size:clamp(64px,15vw,168px)}
+  h1{margin:0;font-weight:800;line-height:.86;letter-spacing:-.04em;font-size:clamp(60px,21vw,168px)}
   h1 .red{display:block;color:var(--red);font-size:.53em;line-height:1;letter-spacing:-.03em;margin-top:6px}
   .rule{width:120px;height:6px;background:var(--red);margin:36px 0 32px;border:0}
 
@@ -54,6 +58,7 @@
   .cd span{display:block;margin-top:8px;color:var(--muted);font-size:12.5px;letter-spacing:.14em;text-transform:uppercase}
   .cd div:first-child b{color:var(--red)}
   .cd-done{margin:0;font-size:22px;font-weight:800}
+  .cta{margin-top:20px;text-decoration:none}
 
   section#register{padding:56px 0 24px}
   .card{background:var(--card);border:1px solid var(--line);border-radius:28px;padding:40px}
@@ -73,6 +78,14 @@
   input::placeholder{color:#6F6F7A}
   input:focus{border-color:var(--red);box-shadow:0 0 0 4px rgba(229,32,46,.22)}
   input[aria-invalid="true"]{border-color:#FF6B76}
+  .choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+  .choice{position:relative;margin:0;cursor:pointer}
+  .choice input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+  .choice .box{display:block;height:100%;padding:18px 18px 16px;border-radius:16px;background:#0A0A0C;border:1.5px solid var(--line);transition:border-color .15s,background .15s,box-shadow .15s}
+  .choice .box b{display:block;font-size:22px;font-weight:800;letter-spacing:-.02em}
+  .choice .box span{display:block;margin-top:4px;font-size:14px;color:var(--muted);font-weight:400}
+  .choice input:checked + .box{border-color:var(--red);background:linear-gradient(135deg,rgba(229,32,46,.30),rgba(229,32,46,.06));box-shadow:0 0 0 4px rgba(229,32,46,.18)}
+  .choice input:focus-visible + .box{border-color:var(--red);box-shadow:0 0 0 4px rgba(229,32,46,.30)}
   .hint{margin:7px 0 0;font-size:13.5px;color:var(--muted)}
   .err{margin:7px 0 0;font-size:13.5px;color:#FF8A93;min-height:0}
   .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
@@ -95,7 +108,7 @@
   .state .big-check{width:72px;height:72px;border-radius:50%;background:var(--red);display:grid;place-items:center;margin:0 auto 20px}
   [hidden]{display:none !important}
 
-  footer.site{margin-top:56px;padding:40px 0 56px;border-top:1px solid var(--line)}
+  footer.site{margin-top:56px;padding:40px 0 calc(56px + env(safe-area-inset-bottom));border-top:1px solid var(--line)}
   footer .thanks{margin:0 0 24px;color:var(--muted);font-size:15px;letter-spacing:.2em;text-transform:uppercase}
   footer .logos{display:flex;align-items:center;gap:48px;flex-wrap:wrap}
   footer .logos img{width:auto;display:block}
@@ -103,11 +116,39 @@
   footer .by b{color:var(--text);font-weight:500}
 
   @media (max-width:760px){
-    .grid{grid-template-columns:1fr}
-    .card{padding:26px 20px;border-radius:22px}
-    header.site img.gambit-logo{height:64px}
-    header.site img.hackhub{height:34px}
-    header.site .gambit span{font-size:18px}
+    .wrap{padding-left:max(18px,env(safe-area-inset-left));padding-right:max(18px,env(safe-area-inset-right))}
+    header.site{padding-top:22px;gap:10px}
+    header.site img.gambit-logo{height:60px}
+    header.site img.hackhub{height:30px}
+    header.site .gambit{gap:10px}
+    header.site .gambit span{font-size:17px}
+    .hero{padding:30px 0 8px}
+    .rule{margin:24px 0 22px;width:90px;height:5px}
+    .countdown{padding:16px 14px 16px;border-radius:20px}
+    .countdown small{margin-bottom:12px;font-size:12px}
+    .cd{gap:8px}
+    .cd div{padding:12px 2px 9px;border-radius:14px}
+    .cd b{font-size:clamp(28px,9.5vw,44px)}
+    .cd span{font-size:10.5px;letter-spacing:.08em;margin-top:6px}
+    .cta{margin-top:14px}
+    section#register{padding:36px 0 8px}
+    .grid{grid-template-columns:1fr;gap:16px}
+    .card{padding:22px 16px;border-radius:22px}
+    .card .sub{margin-bottom:24px;font-size:15px}
+    fieldset{margin-bottom:26px}
+    input{height:56px;font-size:16px}
+    .choices{grid-template-columns:1fr}
+    .choice input{height:1px}
+    .btn{height:60px;font-size:18px}
+    .state p{font-size:16px}
+    footer.site{margin-top:36px;padding-top:30px}
+    footer .logos{gap:26px 30px}
+    footer .logos img{height:60px !important}
+    footer .thanks{font-size:13px;margin-bottom:18px}
+  }
+  @media (max-width:360px){
+    header.site .gambit span{display:none}
+    .cd b{font-size:26px}
   }
   @media (prefers-reduced-motion:reduce){*{transition:none !important;scroll-behavior:auto !important}}
 </style>
@@ -139,6 +180,7 @@
         </div>
         <p class="cd-done" id="cdDone" hidden>Registration is closed</p>
       </div>
+      <a class="btn cta" id="cta" href="#register">Register your team</a>
     </div>
 
     <section id="register" aria-labelledby="regTitle">
@@ -147,7 +189,7 @@
         <!-- FORM -->
         <div id="formView">
           <h2 id="regTitle">Register your team</h2>
-          <p class="sub">Teams of 2 to 4 people. The captain is the main contact. Fields marked optional can be left empty.</p>
+          <p class="sub">Teams of 2 to 4 people. Choose how you will take part: offline at Aktobe HUB or online from any city. The captain is the main contact. Fields marked optional can be left empty.</p>
 
           <form id="regForm" novalidate>
             <div class="hp" aria-hidden="true">
@@ -160,12 +202,12 @@
               <div class="grid">
                 <div class="full">
                   <label for="teamName">Team name</label>
-                  <input id="teamName" name="teamName" type="text" maxlength="60" autocomplete="off" required>
+                  <input id="teamName" name="teamName" type="text" maxlength="60" autocomplete="off" required autocapitalize="words" enterkeyhint="next">
                   <p class="err" data-err="teamName"></p>
                 </div>
                 <div class="full">
                   <label for="school">School</label>
-                  <input id="school" name="school" type="text" maxlength="160" autocomplete="off" required>
+                  <input id="school" name="school" type="text" maxlength="160" autocomplete="off" required autocapitalize="words" enterkeyhint="next">
                   <p class="hint">If your team is from different schools, write them with + (School 1 + School 2).</p>
                   <p class="err" data-err="school"></p>
                 </div>
@@ -177,25 +219,34 @@
               <div class="grid">
                 <div class="full">
                   <label for="member1">Member 1 — Captain (full name)</label>
-                  <input id="member1" name="member1" type="text" maxlength="80" autocomplete="name" required>
+                  <input id="member1" name="member1" type="text" maxlength="80" autocomplete="name" required autocapitalize="words" enterkeyhint="next">
                   <p class="err" data-err="member1"></p>
                 </div>
                 <div>
                   <label for="member2">Member 2 (full name)</label>
-                  <input id="member2" name="member2" type="text" maxlength="80" autocomplete="off" required>
+                  <input id="member2" name="member2" type="text" maxlength="80" autocomplete="off" required autocapitalize="words" enterkeyhint="next">
                   <p class="err" data-err="member2"></p>
                 </div>
                 <div>
                   <label for="member3">Member 3 (full name) <span class="opt">— optional</span></label>
-                  <input id="member3" name="member3" type="text" maxlength="80" autocomplete="off">
+                  <input id="member3" name="member3" type="text" maxlength="80" autocomplete="off" autocapitalize="words" enterkeyhint="next">
                   <p class="err" data-err="member3"></p>
                 </div>
                 <div>
                   <label for="member4">Member 4 (full name) <span class="opt">— optional</span></label>
-                  <input id="member4" name="member4" type="text" maxlength="80" autocomplete="off">
+                  <input id="member4" name="member4" type="text" maxlength="80" autocomplete="off" autocapitalize="words" enterkeyhint="next">
                   <p class="err" data-err="member4"></p>
                 </div>
               </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>How will you take part?</legend>
+              <div class="choices" role="radiogroup" aria-label="Participation format">
+                <label class="choice"><input type="radio" name="format" value="offline"><span class="box"><b>Offline</b><span>At Aktobe HUB, Aktobe</span></span></label>
+                <label class="choice"><input type="radio" name="format" value="online"><span class="box"><b>Online</b><span>From any city</span></span></label>
+              </div>
+              <p class="err" data-err="format"></p>
             </fieldset>
 
             <fieldset>
@@ -203,17 +254,17 @@
               <div class="grid">
                 <div class="full">
                   <label for="email">Captain email</label>
-                  <input id="email" name="email" type="email" maxlength="120" autocomplete="email" inputmode="email" required>
+                  <input id="email" name="email" type="email" maxlength="120" autocomplete="email" inputmode="email" required autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="next">
                   <p class="err" data-err="email"></p>
                 </div>
                 <div>
                   <label for="phone">Captain phone number</label>
-                  <input id="phone" name="phone" type="tel" maxlength="24" autocomplete="tel" inputmode="tel" required>
+                  <input id="phone" name="phone" type="tel" maxlength="24" autocomplete="tel" inputmode="tel" required enterkeyhint="next">
                   <p class="err" data-err="phone"></p>
                 </div>
                 <div>
                   <label for="telegram">Captain Telegram</label>
-                  <input id="telegram" name="telegram" type="text" maxlength="40" autocomplete="off" required>
+                  <input id="telegram" name="telegram" type="text" maxlength="40" autocomplete="off" required autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="send">
                   <p class="err" data-err="telegram"></p>
                 </div>
               </div>
@@ -230,7 +281,8 @@
             <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
           </div>
           <h2>You're in!</h2>
-          <p>Team <b id="doneTeam"></b> is registered. We will contact the captain on Telegram or email. See you on 14 November at Aktobe HUB.</p>
+          <p>Team <b id="doneTeam"></b> is registered.</p>
+          <p id="doneText"></p>
         </div>
 
         <!-- CLOSED -->
@@ -269,6 +321,7 @@
     if (left === 0) {
       document.getElementById('cdBoxes').hidden = true;
       document.getElementById('cdDone').hidden = false;
+      document.getElementById('cta').hidden = true;
       return false;
     }
     cd.d.textContent = pad(Math.floor(left / 86400));
@@ -291,18 +344,18 @@
     formView.hidden = true; closedView.hidden = false;
   }
 
-  function v(name){ return (form.elements[name].value || '').trim().replace(/\s+/g,' '); }
+  function v(name){ var el = form.elements[name]; var val = el && el.value ? el.value : ''; return val.trim().replace(/\s+/g,' '); }
   function setErr(name, msg){
     var el = form.querySelector('[data-err="'+name+'"]');
     var input = form.elements[name];
     if (el) el.textContent = msg || '';
-    if (input) input.setAttribute('aria-invalid', msg ? 'true' : 'false');
+    if (input && input.setAttribute) input.setAttribute('aria-invalid', msg ? 'true' : 'false');
   }
 
   function validate(){
     var ok = true, first = null;
     function bad(name, msg){ setErr(name, msg); if (ok) first = name; ok = false; }
-    ['teamName','school','member1','member2','member3','member4','email','phone','telegram'].forEach(function(n){ setErr(n,''); });
+    ['teamName','school','member1','member2','member3','member4','email','phone','telegram','format'].forEach(function(n){ setErr(n,''); });
 
     if (v('teamName').length < 2) bad('teamName','Enter your team name.');
     if (v('school').length < 2) bad('school','Enter your school.');
@@ -316,9 +369,12 @@
     if (!/^\+?[\d\s()\-]+$/.test(v('phone')) || digits.length < 10 || digits.length > 15) bad('phone','Enter a valid phone number.');
     var tg = v('telegram').replace(/^https?:\/\/t\.me\//i,'').replace(/^@/,'');
     if (!/^[A-Za-z][A-Za-z0-9_]{4,31}$/.test(tg)) bad('telegram','Enter a valid Telegram username (5–32 letters, digits or _).');
-    if (first) form.elements[first].focus();
+    if (v('format') !== 'offline' && v('format') !== 'online') bad('format','Choose offline or online.');
+    if (first) { var fe = form.elements[first]; (fe.length && fe[0] ? fe[0] : fe).focus(); }
     return ok;
   }
+
+  Array.prototype.forEach.call(form.querySelectorAll('input[name="format"]'), function(r){ r.addEventListener('change', function(){ setErr('format',''); }); });
 
   form.addEventListener('submit', function(e){
     e.preventDefault();
@@ -330,6 +386,7 @@
       teamName: v('teamName'),
       school: v('school'),
       member1: v('member1'), member2: v('member2'), member3: v('member3'), member4: v('member4'),
+      format: v('format'),
       email: v('email'),
       phone: v('phone'),
       telegram: '@' + v('telegram').replace(/^https?:\/\/t\.me\//i,'').replace(/^@/,''),
@@ -348,6 +405,9 @@
     }).then(function(res){
       if (res.ok) {
         document.getElementById('doneTeam').textContent = payload.teamName;
+        document.getElementById('doneText').textContent = payload.format === 'online'
+          ? 'We will contact the captain on Telegram or email with the details for online participation. See you on 14 November!'
+          : 'We will contact the captain on Telegram or email. See you on 14 November at Aktobe HUB.';
         formView.hidden = true; doneView.hidden = false; doneView.focus();
         doneView.scrollIntoView({behavior:'smooth', block:'center'});
       } else if (res.d && res.d.closed) {
